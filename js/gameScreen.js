@@ -1,25 +1,38 @@
 'use strict';
 
+// The global game object containing everything
 var game = game || {};
 
+// The screen for playing the game
 game.gameScreen = {
+
+    // Fields
     wheels: undefined,
     colorSwitches: undefined,
     autoSwitches: undefined,
     level: undefined,
+    
+    // Sets up the screen, initializing a level and
+    // setting up mouse event handlers
     setup: function() {
         this.generate();
         game.mouseup = this.applyMouseUp.bind(this);
         game.mousedown = this.applyMouseDown.bind(this);
     },
+    
+    // Generates a new wheel using the screen's current level
     generate: function() {
+    
+        // Clear any previous data
         this.wheel = undefined;
         this.colorSwitches = {};
         this.autoSwitches = [];
         
+        // Initialize a new wheel
         this.wheel = game.Wheel(this.level, game.levels.getRunesPerRing(this.level));
         this.wheel.generate();
         
+        // Add some manual color switches
         var used = new Array(this.wheel.runesPerRing * 2);
         var colorPattern = game.levels.getSwitchPattern(this.level);
         for (var colorIndex in colorPattern) {
@@ -30,13 +43,15 @@ game.gameScreen = {
             }
         }
         
+        // Add some automatic switches
         var autoSwitchCount = game.levels.getAutoSwitchCount(this.level);
         for (var j = 0; j < autoSwitchCount; j++) {
             this.autoSwitches.push(this.createSwitch(used));
         }
         
+        // Shuffle the wheel
         var m = (this.level == 1) ? 6 : 8;
-        for (var i = 0; i < this.level * this.wheel.runesPerRing + 1; i++) {
+        for (var i = 0; i < 2 * this.level * this.wheel.runesPerRing + 1; i++) {
             var rand = Math.random() * m;
             
             if (rand < 6) {
@@ -49,7 +64,12 @@ game.gameScreen = {
             }
         }
     },
+    
+    // Creates a new switch of the given color without overlapping
+    // other switches as recorded in the used array
     createSwitch: function(used, color) {
+    
+        // Get an open spot
         var index, listId;
         do {
             index = Math.floor(Math.random() * this.wheel.runesPerRing);
@@ -57,7 +77,10 @@ game.gameScreen = {
         }
         while (used[listId * this.wheel.runesPerRing + index]);
         
+        // Mark it as used
         used[listId * this.wheel.runesPerRing + index] = true;
+        
+        // Create and return a new switch in the spot
         return game.Switch(
             this.wheel.rings[listId],
             index,
@@ -66,9 +89,13 @@ game.gameScreen = {
             color
         );
     },
+    
+    // Updates the screen by updating the wheel
     update: function() {
         this.wheel.update();
     },
+    
+    // Draws the game screen, rendering the wheel and switches
     draw: function(ctx) {
         this.wheel.draw(ctx);
         for (var color in this.colorSwitches) {
@@ -76,6 +103,8 @@ game.gameScreen = {
         }
         game.applyMethodList(this.autoSwitches, 'draw', ctx);
     },
+    
+    // Toggles manual switches of the given color
     switchColor: function(color) {
         if (this.colorSwitches[color]) {
             var list = this.colorSwitches[color];
@@ -84,17 +113,25 @@ game.gameScreen = {
             }
         }
     },
+    
+    // Toggles automatic switches next to the given ring
     switchAuto: function(ring) {
         for (var index in this.autoSwitches) {
             this.autoSwitches[index].applyRotation(ring);
         }
     },
+    
+    // Handles mouse up events for the screen, activating
+    // switches and canceling dragging rings
     applyMouseUp: function() {
         for (var color in this.colorSwitches) {
             game.applyMethodList(this.colorSwitches[color], 'applyClick');
         }
         game.applyMethodList(this.wheel.rings, 'applyMouseUp');
     },
+    
+    // Handles mouse down events for the screen, starting
+    // dragging rings around
     applyMouseDown: function() {
         game.applyMethodList(this.wheel.rings, 'applyMouseDown');
     }
