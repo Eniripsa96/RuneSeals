@@ -63,9 +63,19 @@ game.setup = function() {
         }
     });
     
+    // Apply mouse up events when the mouse leaves
+    this.canvas.addEventListener('mouseout', function(e) {
+        if (game.mouseup) {
+            game.mouseup();
+        }
+    });
+    
     // Start loading images
-    this.images.load('wheel');
+    this.images.load('titleImage1');
+    this.images.load('titleImage2');
+    this.images.load('titleImage3');
     this.images.load('switch');
+    this.images.load('wheel');
     
     // Set the initial screen
     this.setScreen(this.titleScreen);

@@ -34,7 +34,7 @@ game.levelScreen = {
                     game.setScreen(game.gameScreen);
                 },
                 best < i
-            ));
+            ).fill(game.value.LEVEL_COLORS[Math.floor(i / 5)]));
         }
     },
     
@@ -48,9 +48,9 @@ game.levelScreen = {
     
         // Draw the title
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold ' + (0.1 * ctx.canvas.height) + 'px "Rock Salt"';
+        ctx.font = (0.15 * ctx.canvas.height) + 'px "Ceviche One"';
         ctx.textBaseline = 'middle';
-        var text = 'Level Selection';
+        var text = 'Level  Selection';
         var size = ctx.measureText(text);
         ctx.fillText(text, (ctx.canvas.width - size.width) / 2, 0.075 * ctx.canvas.height);
     

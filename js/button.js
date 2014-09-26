@@ -15,8 +15,10 @@ game.Button = function(text, x, y, width, height, callback, disabled) {
         height: height,
         hovered: false,
         disabled: disabled,
+        color: '#555',
         
         // Methods
+        fill: this.buttonMethods.fill,
         update: this.buttonMethods.update,
         draw: this.buttonMethods.draw,
         applyClick: this.buttonMethods.applyClick,
@@ -26,6 +28,12 @@ game.Button = function(text, x, y, width, height, callback, disabled) {
 
 // The methods for buttons
 game.buttonMethods = {
+
+    // Sets the fill color of the button when enabled and not hovered
+    fill: function(color) {
+        this.color = color;
+        return this;
+    },
 
     // Updates whether or not the button is currently hovered
     update: function() {
@@ -41,12 +49,6 @@ game.buttonMethods = {
     // Draws the button to the canvas
     draw: function(ctx) {
     
-        var x = this.x * ctx.canvas.width;
-        var y = this.y * ctx.canvas.height;
-        var w = this.width * ctx.canvas.width;
-        var h = this.height * ctx.canvas.width;
-        var r = h / 5;
-        
         // Change the color if hovered
         if (this.disabled) {
             ctx.fillStyle = '#333';
@@ -57,23 +59,18 @@ game.buttonMethods = {
             ctx.strokeStyle = '#fff';
         }
         else {
-            ctx.fillStyle = '#555';
+            ctx.fillStyle = this.color;
             ctx.strokeStyle = '#ddd';
         }
         
         // Draw the rounded rectangle
+        var x = this.x * ctx.canvas.width;
+        var y = this.y * ctx.canvas.height;
+        var w = this.width * ctx.canvas.width;
+        var h = this.height * ctx.canvas.width;
+        var r = h / 5;
         ctx.lineWidth = r / 3;
-        ctx.beginPath();
-        ctx.moveTo(x + r, y);
-        ctx.lineTo(x + w - r, y);
-        ctx.arcTo(x + w, y, x + w, y + r, r);
-        ctx.lineTo(x + w, y + h - r);
-        ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
-        ctx.lineTo(x + r, y + h);
-        ctx.arcTo(x, y + h, x, y + h - r, r);
-        ctx.lineTo(x, y + r);
-        ctx.arcTo(x, y, x + r, y, r);
-        ctx.closePath();
+        game.drawing.rect(ctx, x, y, w, h, r);
         ctx.fill();
         ctx.stroke();
         
@@ -86,7 +83,7 @@ game.buttonMethods = {
         }
         
         // Draw the text on top of the button
-        ctx.font = 'bold ' + (0.4 * h) + 'px Papyrus';
+        ctx.font = 'bold ' + (0.6 * h) + 'px "Bree Serif"';
         ctx.textBaseline = 'middle';
         var size = ctx.measureText(this.text);
         ctx.fillText(this.text, x + (w - size.width) / 2, y + h / 2);

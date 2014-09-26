@@ -11,6 +11,8 @@ game.gameScreen = {
     colorSwitches: undefined,
     autoSwitches: undefined,
     level: undefined,
+    time: undefined,
+    text: undefined,
     
     // Sets up the screen, initializing a level and
     // setting up mouse event handlers
@@ -64,6 +66,18 @@ game.gameScreen = {
                 console.log('Switched: ' + game.value.SWITCH_COLORS[c]);
             }
         }
+        
+        // Redo the randomization if the shuffle resulted in a solved puzzle
+        if (this.wheel.isSolved()) {
+            this.generate();
+            return;
+        }
+        
+        // Start the timer
+        this.time = new Date().getTime();
+        
+        // Get the level text
+        this.text = game.value.LEVEL_TEXT[this.level];
     },
     
     // Creates a new switch of the given color without overlapping
@@ -107,11 +121,63 @@ game.gameScreen = {
     
     // Draws the game screen, rendering the wheel and switches
     draw: function(ctx) {
+    
+        // Draw the wheel and its components
         this.wheel.draw(ctx);
         for (var color in this.colorSwitches) {
             game.applyMethodList(this.colorSwitches[color], 'draw', ctx);
         }
         game.applyMethodList(this.autoSwitches, 'draw', ctx);
+        
+        // Draw the level data box
+        var x = ctx.canvas.width * 0.02;
+        var y = ctx.canvas.height * 0.03;
+        var w = ctx.canvas.width * 0.2;
+        var h = ctx.canvas.height * 0.2;
+        var r = ctx.canvas.height * 0.02;
+        ctx.lineWidth = r / 3;
+        ctx.strokeStyle = 'white';
+        game.drawing.rect(ctx, x, y, w, h, r);
+        ctx.stroke();
+        
+        // Current level
+        ctx.fillStyle = 'white';
+        ctx.font = ctx.canvas.height * 0.06 + 'px "Bree Serif"';
+        var text = 'Level ' + this.level;
+        var size = ctx.measureText(text);
+        ctx.fillText(text, ctx.canvas.width * 0.12 - size.width / 2, ctx.canvas.height * 0.08);
+        
+        // Current time
+        var seconds = Math.floor((new Date().getTime() - this.time) / 1000);
+        var minutes = Math.floor(seconds / 60);
+        seconds = seconds % 60;
+        text = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        size = ctx.measureText(text);
+        ctx.fillText(text, ctx.canvas.width * 0.12 - size.width / 2, ctx.canvas.height * 0.16);
+        
+        // Level text
+        if (this.text) {
+        
+            y = ctx.canvas.height * 0.78;
+            game.drawing.rect(ctx, x, y, w, h, r);
+            ctx.stroke();
+        
+            var lines = this.text.length;
+            var y = game.canvas.height * (0.88 - 0.02 * (lines - 1));
+            ctx.font = ctx.canvas.height * 0.04 + 'px "Bree Serif"';
+            var i, maxWidth = 0;
+            for (i = 0; i < lines; i++) {
+                size = ctx.measureText(this.text[i]);
+                if (size.width > maxWidth) {
+                    maxWidth = size.width;
+                }
+            }
+            var textX = game.canvas.width * 0.12 - maxWidth / 2;
+            for (i = 0; i < lines; i++) {
+                ctx.fillText(this.text[i], textX, y);
+                y += game.canvas.height * 0.04;
+            }
+        }
     },
     
     // Toggles manual switches of the given color

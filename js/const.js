@@ -13,11 +13,13 @@ game.value = {
     // Available colors for runes
     RUNE_COLORS: [
         '#f00',
-        '#f80',
         '#ff0',
         '#0f0',
         '#0ff',
+        '#f80',
         '#08f',
+        
+        // unused
         '#00f',
         '#80f',
         '#f0f',
@@ -30,6 +32,38 @@ game.value = {
         '#080',
         '#008'
     ],
+    
+    // Colors for the buttons in the level select screen
+    LEVEL_COLORS: [
+        '#080',
+        '#082',
+        '#084',
+        '#086',
+        '#088',
+        '#068',
+        '#048',
+        '#028',
+        '#008',
+        '#208',
+        '#408',
+        '#608',
+        '#808',
+        '#806',
+        '#804',
+        '#802',
+        '#800',
+        '#600',
+        '#400',
+        '#200',
+    ],
+    
+    // Text for various levels
+    LEVEL_TEXT: {
+        1: ['Drag rings to', 'rotate them.', 'Align colors to', 'clear the level.'],
+        6: ['Click switches', 'to swap runes', 'between rings.'],
+        16: ['Switches with', 'the same color', 'activate at', 'the same time.'],
+        56: ['Black switches', 'automatically', 'switch passing', 'runes.']
+    },
     
     // Manual switch layouts for levels
     LEVEL_SWITCHES: [
