@@ -33,20 +33,21 @@ game.gameScreen = {
         this.wheel.generate();
         
         // Add some manual color switches
+		var rings = [0, 1];
         var used = new Array(this.wheel.runesPerRing * 2);
         var colorPattern = game.levels.getSwitchPattern(this.level);
         for (var colorIndex in colorPattern) {
             var color = game.value.SWITCH_COLORS[colorIndex];
             this.colorSwitches[color] = [];
             for (var i = 0; i < colorPattern[colorIndex]; i++) {
-                this.colorSwitches[color].push(this.createSwitch(used, color));
+                this.colorSwitches[color].push(this.createSwitch(used, rings, color));
             }
         }
         
         // Add some automatic switches
         var autoSwitchCount = game.levels.getAutoSwitchCount(this.level);
         for (var j = 0; j < autoSwitchCount; j++) {
-            this.autoSwitches.push(this.createSwitch(used));
+            this.autoSwitches.push(this.createSwitch(used, rings));
         }
         
         // Shuffle the wheel
@@ -67,15 +68,24 @@ game.gameScreen = {
     
     // Creates a new switch of the given color without overlapping
     // other switches as recorded in the used array
-    createSwitch: function(used, color) {
+    createSwitch: function(used, rings, color) {
     
         // Get an open spot
-        var index, listId;
+        var index, listId, ringIndex;
         do {
             index = Math.floor(Math.random() * this.wheel.runesPerRing);
-            listId = Math.floor(Math.random() * 2);
+			if (rings.length > 0) {
+				ringIndex = Math.floor(Math.random() * rings.length);
+				listId = rings[ringIndex];
+			}
+            else {
+				listId = Math.floor(Math.random() * 2);
+			}
         }
         while (used[listId * this.wheel.runesPerRing + index]);
+		if (ringIndex) {
+			rings.splice(ringIndex, 1);
+		}
         
         // Mark it as used
         used[listId * this.wheel.runesPerRing + index] = true;

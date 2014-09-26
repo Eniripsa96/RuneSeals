@@ -8,16 +8,16 @@ game.titleScreen = {
 
     // Fields
     content: [
-        game.Button('Play', 0.05, 0.53, 0.3, 0.08, function() {
+        game.Button('Play', 0.03, 0.53, 0.3, 0.08, function() {
             console.log('Play button pressed');
             game.gameScreen.level = 1;
             game.setScreen(game.gameScreen);
         }),
-        game.Button('Level Select', 0.05, 0.68, 0.3, 0.08, function() {
+        game.Button('Level Select', 0.03, 0.68, 0.3, 0.08, function() {
             console.log('Level select button presesd');
             game.setScreen(game.levelScreen);
         }),
-        game.Button('Credits', 0.05, 0.83, 0.3, 0.08, function() {
+        game.Button('Credits', 0.03, 0.83, 0.3, 0.08, function() {
             console.log('Credits button pressed');
         })
     ],
@@ -34,6 +34,16 @@ game.titleScreen = {
     
     // Draws the screen by drawing the screen's content
     draw: function(ctx) {
+	
+		// Draw the title
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold ' + (0.15 * ctx.canvas.height) + 'px "Rock Salt"';
+        ctx.textBaseline = 'middle';
+        var text = 'Rune Seals';
+        var size = ctx.measureText(text);
+        ctx.fillText(text, ctx.canvas.width * 0.05, 0.1 * ctx.canvas.height);
+	
+		// Draw the buttons
         game.applyMethodList(this.content, 'draw', ctx);
     },
     

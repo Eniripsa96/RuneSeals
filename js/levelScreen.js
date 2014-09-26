@@ -48,7 +48,7 @@ game.levelScreen = {
     
         // Draw the title
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold ' + (0.1 * ctx.canvas.height) + 'px Papyrus';
+        ctx.font = 'bold ' + (0.1 * ctx.canvas.height) + 'px "Rock Salt"';
         ctx.textBaseline = 'middle';
         var text = 'Level Selection';
         var size = ctx.measureText(text);
