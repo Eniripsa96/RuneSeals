@@ -124,6 +124,14 @@ game.gameScreen = {
     // Checks whether or not the level has been cleared
     checkVictory: function() {
         if (this.wheel.isSolved()) {
+        
+            // Update best progress
+            var best = game.userData.getNum('level');
+            if (this.level > best) {
+                game.userData.set('level', this.level);
+            }
+            
+            // Move to the next level
             this.level++;
             this.generate();
         }

@@ -14,7 +14,8 @@ game.titleScreen = {
             game.setScreen(game.gameScreen);
         }),
         game.Button('Level Select', 0.05, 0.68, 0.3, 0.08, function() {
-            console.log('Help button presesd');
+            console.log('Level select button presesd');
+            game.setScreen(game.levelScreen);
         }),
         game.Button('Credits', 0.05, 0.83, 0.3, 0.08, function() {
             console.log('Credits button pressed');

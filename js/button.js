@@ -4,7 +4,7 @@
 var game = game || {};
 
 // A simple button to be used in menus
-game.Button = function(text, x, y, width, height, callback) {
+game.Button = function(text, x, y, width, height, callback, disabled) {
     return {
     
         // Fields
@@ -14,6 +14,7 @@ game.Button = function(text, x, y, width, height, callback) {
         width: width,
         height: height,
         hovered: false,
+        disabled: disabled,
         
         // Methods
         update: this.buttonMethods.update,
@@ -47,15 +48,20 @@ game.buttonMethods = {
         var r = h / 5;
         
         // Change the color if hovered
-        if (this.hovered) {
+        if (this.disabled) {
+            ctx.fillStyle = '#333';
+            ctx.strokeStyle = '#aaa';
+        }
+        else if (this.hovered) {
             ctx.fillStyle = '#aaa';
+            ctx.strokeStyle = '#fff';
         }
         else {
             ctx.fillStyle = '#555';
+            ctx.strokeStyle = '#ddd';
         }
         
         // Draw the rounded rectangle
-        ctx.strokeStyle = '#fff';
         ctx.lineWidth = r / 3;
         ctx.beginPath();
         ctx.moveTo(x + r, y);
@@ -71,9 +77,16 @@ game.buttonMethods = {
         ctx.fill();
         ctx.stroke();
         
+        // Set the color for text
+        if (this.disabled) {
+            ctx.fillStyle = '#f66';
+        }
+        else {
+            ctx.fillStyle = '#fff';
+        }
+        
         // Draw the text on top of the button
         ctx.font = 'bold ' + (0.4 * h) + 'px Papyrus';
-        ctx.fillStyle = '#fff';
         ctx.textBaseline = 'middle';
         var size = ctx.measureText(this.text);
         ctx.fillText(this.text, x + (w - size.width) / 2, y + h / 2);
@@ -81,7 +94,7 @@ game.buttonMethods = {
     
     // Calls the callback function when clicked
     applyClick: function() {
-        if (this.hovered) {
+        if (this.hovered && !this.disabled) {
             this.callback();
         }
     }
