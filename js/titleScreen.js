@@ -8,15 +8,15 @@ game.titleScreen = {
 
     // Fields
     content: [
-        game.Button('Play', 0.05, 0.50, 0.3, 0.08, function() {
+        game.Button('Play', 0.05, 0.53, 0.3, 0.08, function() {
             console.log('Play button pressed');
             game.gameScreen.level = 1;
             game.setScreen(game.gameScreen);
         }),
-        game.Button('Help', 0.05, 0.65, 0.3, 0.08, function() {
+        game.Button('Level Select', 0.05, 0.68, 0.3, 0.08, function() {
             console.log('Help button presesd');
         }),
-        game.Button('Credits', 0.05, 0.80, 0.3, 0.08, function() {
+        game.Button('Credits', 0.05, 0.83, 0.3, 0.08, function() {
             console.log('Credits button pressed');
         })
     ],

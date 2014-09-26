@@ -111,6 +111,7 @@ game.ringMethods = {
             this.rotationCount = 0;
             
             this.applyRotation(clockwise);
+            game.screen.checkVictory();
         }
     },
     

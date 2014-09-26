@@ -19,7 +19,8 @@ game.Wheel = function(level, runesPerRing) {
         // Methods
         generate: this.wheelMethods.generate,
         update: this.wheelMethods.update,
-        draw: this.wheelMethods.draw
+        draw: this.wheelMethods.draw,
+        isSolved: this.wheelMethods.isSolved
     };
 };
 
@@ -69,5 +70,17 @@ game.wheelMethods = {
         
         // Draw rings/runes
         game.applyMethodList(this.rings, 'draw', ctx);
+    },
+    
+    // Checks whether or not the wheel is solved
+    isSolved: function() {
+        for (var ringIndex in this.rings) {
+            for (var i = 0; i < this.runesPerRing; i++) {
+                if (this.rings[ringIndex].runes[i].color != game.value.RUNE_COLORS[i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 };

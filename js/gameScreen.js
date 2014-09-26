@@ -121,6 +121,14 @@ game.gameScreen = {
         }
     },
     
+    // Checks whether or not the level has been cleared
+    checkVictory: function() {
+        if (this.wheel.isSolved()) {
+            this.level++;
+            this.generate();
+        }
+    },
+    
     // Handles mouse up events for the screen, activating
     // switches and canceling dragging rings
     applyMouseUp: function() {
