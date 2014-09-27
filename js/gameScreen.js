@@ -11,6 +11,7 @@ game.gameScreen = {
     colorSwitches: undefined,
     autoSwitches: undefined,
     level: undefined,
+    startTime: undefined,
     time: undefined,
     text: undefined,
     
@@ -74,7 +75,7 @@ game.gameScreen = {
         }
         
         // Start the timer
-        this.time = new Date().getTime();
+        this.startTime = new Date().getTime();
         
         // Get the level text
         this.text = game.value.LEVEL_TEXT[this.level];
@@ -117,6 +118,7 @@ game.gameScreen = {
     // Updates the screen by updating the wheel
     update: function() {
         this.wheel.update();
+        this.time = new Date().getTime();
     },
     
     // Draws the game screen, rendering the wheel and switches
@@ -148,7 +150,7 @@ game.gameScreen = {
         ctx.fillText(text, ctx.canvas.width * 0.12 - size.width / 2, ctx.canvas.height * 0.08);
         
         // Current time
-        var seconds = Math.floor((new Date().getTime() - this.time) / 1000);
+        var seconds = Math.floor((this.time - this.startTime) / 1000);
         var minutes = Math.floor(seconds / 60);
         seconds = seconds % 60;
         text = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;

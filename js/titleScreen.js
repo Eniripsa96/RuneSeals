@@ -24,6 +24,7 @@ game.titleScreen = {
         }),
         game.Button('Credits', 0.03, 0.83, 0.3, 0.08, function() {
             console.log('Credits button pressed');
+            game.setScreen(game.creditsScreen);
         })
     ],
     
