@@ -71,10 +71,12 @@ game.setup = function() {
         return false;
     };
     
-    // Apply mouse up events when the mouse leaves
+    // Apply mouse out event
     this.canvas.addEventListener('mouseout', function(e) {
-        if (game.mouseup) {
-            game.mouseup();
+        game.mouse.x = -1;
+        game.mouse.y = -1;
+        if (game.mouseout) {
+            game.mouseout();
         }
     });
     

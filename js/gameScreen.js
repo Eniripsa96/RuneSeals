@@ -21,6 +21,7 @@ game.gameScreen = {
     setup: function() {
         this.generate();
         game.mouseup = this.applyMouseUp.bind(this);
+        game.mouseout = this.applyMouseOut.bind(this);
         game.mousedown = this.applyMouseDown.bind(this);
         game.rightclick = this.undo.bind(this);
     },
@@ -57,15 +58,24 @@ game.gameScreen = {
         
         // Shuffle the wheel
         var m = (this.level == 1) ? 6 : 8;
-        for (var i = 0; i < 2 * this.level * this.wheel.runesPerRing + 1; i++) {
-            var rand = Math.random() * m;
+        var last = [];
+        for (var i = 0; i < 2 * this.level * this.wheel.runesPerRing + 1; i ++) {
+            var rand, mod, div;
+            do {
+                rand = Math.random() * m;
+                mod = rand % 2;
+                div = Math.floor(rand / 2);
+            }
+            while ((last[3] >= 6 && rand >= 6) || (rand < 6 && last[div] !== undefined && mod < 1 == last[div] < 1));
+            last[3] = rand;
             
             if (rand < 6) {
-				this.wheel.rings[Math.floor(rand / 2)].shift(rand < 5);
+                this.wheel.rings[div].shift(mod < 1);
 			}
 			else {
                 var c = Math.floor(Math.random() * colorPattern.length);
                 this.switchColor(game.value.SWITCH_COLORS[c]);
+                last[0] = last[1] = last[2] = undefined;
                 console.log('Switched: ' + game.value.SWITCH_COLORS[c]);
             }
         }
@@ -100,7 +110,7 @@ game.gameScreen = {
 			}
         }
         while (used[listId * this.wheel.runesPerRing + index]);
-		if (ringIndex) {
+		if (ringIndex !== undefined) {
 			rings.splice(ringIndex, 1);
 		}
         
@@ -234,17 +244,22 @@ game.gameScreen = {
     },
     
     // Handles mouse up events for the screen, activating
-    // switches and canceling dragging rings
+    // switches and cancelling dragging rings
     applyMouseUp: function() {
         for (var color in this.colorSwitches) {
             game.applyMethodList(this.colorSwitches[color], 'applyClick');
         }
-        game.applyMethodList(this.wheel.rings, 'applyMouseUp');
+        this.applyMouseOut();
     },
     
     // Handles mouse down events for the screen, starting
     // dragging rings around
     applyMouseDown: function() {
         game.applyMethodList(this.wheel.rings, 'applyMouseDown');
+    },
+    
+    // Handles mouse out events for the screen, cancelling dragging rings
+    applyMouseOut: function() {
+        game.applyMethodList(this.wheel.rings, 'applyMouseUp');
     }
 };
