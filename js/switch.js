@@ -32,7 +32,7 @@ game.switchMethods = {
 
     // Draws the switch to the canvas
     draw: function(ctx) {
-    
+        return;
         var r = 30 * this.scale;
         var x = this.x * this.scale + ctx.canvas.width / 2;
         var y = this.y * this.scale + ctx.canvas.height / 2;

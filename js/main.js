@@ -71,14 +71,13 @@ game.setup = function() {
     });
     
     // Start loading images
-    this.images.load('titleImage1');
-    this.images.load('titleImage2');
-    this.images.load('titleImage3');
     this.images.load('switch');
     this.images.load('wheel');
     this.images.load('center');
-    
     var i;
+    for (i = 1; i <= 4; i++) {
+        this.images.load('titleImage' + i);
+    }
     for (i = 0; i < this.value.ROCK_COUNT; i++) {
         this.images.load('rock' + i);
     }    

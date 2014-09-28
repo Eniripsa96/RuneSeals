@@ -10,7 +10,8 @@ game.titleScreen = {
     imageData: [
         game.math.Vector(1, 0), Math.cos(Math.PI / 1440), Math.sin(Math.PI / 1440),
         game.math.Vector(1, 0), Math.cos(Math.PI / 600), Math.sin(-Math.PI / 600),
-        game.math.Vector(1, 0), Math.cos(Math.PI / 480), Math.sin(Math.PI / 480)
+        game.math.Vector(1, 0), Math.cos(Math.PI / 480), Math.sin(Math.PI / 480),
+        game.math.Vector(1, 0), 1, 0
     ],
     content: [
         game.Button('Play', 0.03, 0.53, 0.3, 0.08, function() {
@@ -50,7 +51,7 @@ game.titleScreen = {
         ctx.fillText(text, ctx.canvas.width * 0.03, 0.1 * ctx.canvas.height);
         
         // Draw the rotating wheel
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 4; i++) {
             ctx.translate(game.canvas.width, game.canvas.height);
             var dx = this.imageData[i * 3].x;
             var dy = this.imageData[i * 3].y;
