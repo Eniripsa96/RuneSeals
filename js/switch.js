@@ -79,6 +79,7 @@ game.switchMethods = {
             if (mouse.lengthSq() < r * r) {
                 if (game.screen.switchColor) {
                     game.screen.switchColor(this.color);
+                    game.screen.moves.push({ rotation: false, color: this.color });
                 }
             }
         }

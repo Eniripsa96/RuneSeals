@@ -124,6 +124,7 @@ game.ringMethods = {
             this.rotationCount = 0;
             
             this.applyRotation(clockwise);
+            game.screen.moves.push({ rotation: true, ring: this, clockwise: clockwise });
             game.screen.checkVictory();
         }
     },
@@ -140,7 +141,7 @@ game.ringMethods = {
     // Unshifts the ring's runes for an undo
     unshift: function(clockwise) {
         game.screen.switchAuto(this);
-        this.shift(ring, !clockwise);
+        this.shift(!clockwise);
         game.screen.switchAuto(this);
     },
     

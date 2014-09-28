@@ -14,6 +14,7 @@ game.gameScreen = {
     startTime: undefined,
     time: undefined,
     text: undefined,
+    moves: [],
     
     // Sets up the screen, initializing a level and
     // setting up mouse event handlers
@@ -21,6 +22,7 @@ game.gameScreen = {
         this.generate();
         game.mouseup = this.applyMouseUp.bind(this);
         game.mousedown = this.applyMouseDown.bind(this);
+        game.rightclick = this.undo.bind(this);
     },
     
     // Generates a new wheel using the screen's current level
@@ -196,6 +198,23 @@ game.gameScreen = {
     switchAuto: function(ring) {
         for (var index in this.autoSwitches) {
             this.autoSwitches[index].applyRotation(ring);
+        }
+    },
+    
+    // Undoes the last move
+    undo: function() {
+        if (this.moves.length > 0) {
+            var move = this.moves.pop();
+            
+            // Undo a rotation
+            if (move.rotation) {
+                move.ring.unshift(move.clockwise);
+            }
+            
+            // Undo a switch
+            else {
+                this.switchColor(move.color);
+            }
         }
     },
     

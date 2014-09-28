@@ -51,17 +51,25 @@ game.setup = function() {
     // List for mouse down events
     this.canvas.addEventListener('mousedown',
     function(e) {
-        if (game.mousedown) {
+        if (game.mousedown && e.button == 0) {
             game.mousedown();
         }
     });
     
     // Listen for mouse up events
     this.canvas.addEventListener('mouseup', function(e) {
-        if (game.mouseup) {
+        if (game.mouseup && e.button == 0) {
             game.mouseup();
         }
+        else if (game.rightclick && e.button == 2) {
+            game.rightclick();
+        }
     });
+    
+    // Cancel the context menu
+    this.canvas.oncontextmenu = function(e) {
+        return false;
+    };
     
     // Apply mouse up events when the mouse leaves
     this.canvas.addEventListener('mouseout', function(e) {
