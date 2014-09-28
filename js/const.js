@@ -10,21 +10,8 @@ game.value = {
     ROTATION_COS: Math.cos(Math.PI / 90),
     ROTATION_SIN: Math.sin(Math.PI / 90),
     
-    // Available colors for runes
-    RUNE_COLORS: [
-        '#f00',
-        '#ff0',
-        '#0f0',
-        '#0ff',
-        '#f80',
-        '#08f',
-        
-        // unused
-        '#00f',
-        '#80f',
-        '#f0f',
-        '#f08'
-    ],
+    // Number of rock sprites
+    ROCK_COUNT: 4,
     
     // Available colors for switches
     SWITCH_COLORS: [

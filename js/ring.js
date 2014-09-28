@@ -8,12 +8,13 @@ game.Ring = function(wheel, radius) {
     return {
         
         // Fields
-        runes: this.ringMethods.generateRunes(wheel, wheel.runesPerRing, radius, wheel.cos, wheel.sin),
         radius: radius,
         wheel: wheel,
         rotationCount: 0,
+        rocks: undefined,
         rotationTarget: 180 / wheel.runesPerRing,
         rotationAxis: undefined,
+        runes: this.ringMethods.generate(wheel, wheel.runesPerRing, radius, wheel.cos, wheel.sin),
         
         // Methods
         update: this.ringMethods.update,
@@ -31,11 +32,13 @@ game.Ring = function(wheel, radius) {
 game.ringMethods = {
 
     // Generates the runes for the ring
-    generateRunes: function(wheel, num, radius, c, s) {
-        var pos = game.math.Vector(0, -radius);
+    generate: function(wheel, num, radius, c, s) {
+    
+        // Generates the runes
+        var pos = game.math.Vector(1, 0);
         var list = [];
         for (var i = 0; i < num; i++) {
-            list.push(game.Rune(wheel, game.value.RUNE_COLORS[i], pos.clone()));
+            list.push(game.Rune(wheel, i, pos.clone(), radius, game.images.get('rock' + Math.floor(Math.random() * game.value.ROCK_COUNT))));
             
             pos.rotate(c, s);
         }
@@ -73,13 +76,23 @@ game.ringMethods = {
         // rotate the ring to the nearest desired position
         else if (this.rotationCount != 0) {
             var c1 = this.rotationCount > 0;
-            var c2 = Math.abs(this.rotationCount) < this.rotationTarget / 2;
+            var c2 = Math.abs(this.rotationCount) < this.rotationTarget / 16;
             this.rotate(c1 == c2);
         }
     },
     
     // Draws the ring by drawing each rune in the ring
     draw: function(ctx) {
+        
+        // Draws the circles for the ring
+        ctx.strokeStyle = '#444';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, this.radius * this.wheel.scale, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.stroke();
+        
+        // Draws the runes
         game.applyMethodList(this.runes, 'draw', ctx);
     },
     
@@ -92,7 +105,7 @@ game.ringMethods = {
     
         // Rotate the runes
         for (var runeIndex in this.runes) {
-            this.runes[runeIndex].pos.rotate(c, s);
+            this.runes[runeIndex].direction.rotate(c, s);
         }
         
         // Rotate the rotation axis to compare to the mouse
@@ -119,7 +132,7 @@ game.ringMethods = {
     shift: function(clockwise) {
         var m = clockwise ? -1 : 1;
         for (var runeIndex in this.runes) {
-            this.runes[runeIndex].pos.rotate(this.wheel.cos, this.wheel.sin * m);
+            this.runes[runeIndex].direction.rotate(this.wheel.cos, this.wheel.sin * m);
         }
         this.applyRotation(clockwise);
     },

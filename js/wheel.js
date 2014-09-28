@@ -29,6 +29,8 @@ game.wheelMethods = {
 
     // Generates the rings for the wheel
     generate: function() {
+    
+        // Generate rings
         this.cos = Math.cos(this.angle);
         this.sin = Math.sin(this.angle)
         for (var i = 0; i < 3; i++) {
@@ -44,29 +46,31 @@ game.wheelMethods = {
     // Draws the wheel to the canvas, including all rings/runes
     draw: function(ctx) {
     
-        // Draw the wheel itself
-        var x = ctx.canvas.width / 2;
-        var y = ctx.canvas.height / 2;
-        var r = this.scale * 512;
-        ctx.drawImage(game.images.get('wheel'), x - r, y - r, 2 * r, 2 * r);
+        // Draw the center of the wheel
+        ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+        var center = game.images.get('center');
+        ctx.drawImage(
+            center,
+            -center.width * this.scale / 2,
+            -center.height * this.scale / 2,
+            center.width * this.scale,
+            center.height * this.scale
+        );  
         
         // Draw the interior circles to show what needs to go where
-        var pos = game.math.Vector(0, -120);
         for (var i = 0; i < this.runesPerRing; i++) {
-            ctx.fillStyle = game.value.RUNE_COLORS[i];
-            ctx.beginPath();
-            ctx.arc(
-                ctx.canvas.width / 2 + pos.x * this.scale, 
-                ctx.canvas.height / 2 + pos.y * this.scale, 
-                30 * this.scale, 
-                0, 
-                Math.PI * 2
+            var sprite = game.images.get('rune' + i);
+            ctx.drawImage(
+                sprite, 
+                -sprite.width * this.scale / 2, 
+                (-sprite.height / 2 - 80) * this.scale, 
+                sprite.width * this.scale, 
+                sprite.height * this.scale
             );
-            ctx.closePath();
-            ctx.fill();
             
-            pos.rotate(this.cos, this.sin);
+            ctx.transform(this.cos, this.sin, -this.sin, this.cos, 0, 0);
         }
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         
         // Draw rings/runes
         game.applyMethodList(this.rings, 'draw', ctx);
@@ -76,7 +80,7 @@ game.wheelMethods = {
     isSolved: function() {
         for (var ringIndex in this.rings) {
             for (var i = 0; i < this.runesPerRing; i++) {
-                if (this.rings[ringIndex].runes[i].color != game.value.RUNE_COLORS[i]) {
+                if (this.rings[ringIndex].runes[i].id != i) {
                     return false;
                 }
             }

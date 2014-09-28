@@ -76,6 +76,15 @@ game.setup = function() {
     this.images.load('titleImage3');
     this.images.load('switch');
     this.images.load('wheel');
+    this.images.load('center');
+    
+    var i;
+    for (i = 0; i < this.value.ROCK_COUNT; i++) {
+        this.images.load('rock' + i);
+    }    
+    for (i = 0; i < 6; i++) {
+        this.images.load('rune' + i);
+    }
     
     // Set the initial screen
     this.setScreen(this.titleScreen);

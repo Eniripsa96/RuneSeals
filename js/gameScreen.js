@@ -210,8 +210,7 @@ game.gameScreen = {
             }
             
             // Move to the next level
-            this.level++;
-            this.generate();
+			game.setScreen(game.winScreen);
         }
     },
     

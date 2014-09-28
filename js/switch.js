@@ -6,14 +6,16 @@ var game = game || {};
 // A single switch in the game, either manual or automatic
 // It is automatic when a color isn't provided and manual otherwise
 game.Switch = function(ring1, index1, ring2, index2, color) {
+    var rune1 = ring1.runes[index1];
+    var rune2 = ring2.runes[index2];
     return {
     
         // Fields
         rings: [ring1, ring2],
         indexes: [index1, index2],
         color: color,
-        x: (ring1.runes[index1].pos.x + ring2.runes[index2].pos.x) / 2,
-        y: (ring1.runes[index1].pos.y + ring2.runes[index2].pos.y) / 2,
+        x: (rune1.direction.y * rune1.radius + rune2.direction.y * rune2.radius) / 2,
+        y: (-rune1.direction.x * rune1.radius - rune2.direction.x * rune2.radius) / 2,
         scale: ring1.runes[index1].scale,
         
         // Methods
@@ -48,9 +50,12 @@ game.switchMethods = {
     apply: function() {
         var rune1 = this.getRune(0);
         var rune2 = this.getRune(1);
-        var c = rune1.color;
-        rune1.color = rune2.color;
-        rune2.color = c;
+        var id = rune1.id;
+        var sprite = rune1.sprite;
+        rune1.id = rune2.id;
+        rune1.sprite = rune2.sprite;
+        rune2.id = id;
+        rune2.sprite = sprite;
     },
     
     // Gets a target rune by ID, 0 being the first, 1 being the second
