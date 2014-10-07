@@ -32,6 +32,12 @@ game.setScreen = function(screen) {
     this.screen.setup();
 };
 
+// Music for the game
+game.activeSong = undefined;
+game.music = {
+    menu: new Audio("sound/runeOpening.mp3")
+};
+
 // Initializes the game's data
 game.setup = function() {
 
@@ -39,6 +45,12 @@ game.setup = function() {
     this.canvas = document.querySelector('#canvas');
     this.canvasCtx = this.canvas.getContext('2d');
     this.mouse = game.math.Vector(0, 0);
+    
+    // Set music to loop and start off mute
+    for (var song in this.music) {
+        this.music[song].loop = true;
+        this.music[song].volume = 0;
+    }
     
     // Listen for mouse move events
     this.canvas.addEventListener('mousemove', function(e) {
@@ -111,6 +123,25 @@ game.update = function() {
     // Clear the canvas
     this.canvasCtx.fillStyle = 'black';
     this.canvasCtx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Update music
+    if (this.activeSong != this.screen.song) {
+        if (this.activeSong !== undefined) {
+            this.music[this.activeSong].volume = Math.max(0, this.music[this.activeSong].volume - 0.01);
+            if (this.music[this.activeSong].volume == 0) {
+                this.music[this.activeSong].pause();
+            }
+        }
+        if (this.activeSong === undefined || this.music[this.activeSong].volume <= 0) {
+            this.activeSong = this.screen.song;
+            if (this.activeSong !== undefined) {
+                this.music[this.activeSong].play();
+            }
+        }
+    }
+    if (this.activeSong === this.screen.song && this.activeSong !== undefined && this.music[this.activeSong].volume < 1) {
+        this.music[this.activeSong].volume = Math.min(1, this.music[this.activeSong].volume + 0.01);
+    }
     
     // Draw the screen
     this.screen.draw(this.canvasCtx);

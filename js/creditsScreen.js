@@ -13,6 +13,7 @@ game.creditsScreen = {
             game.setScreen(game.titleScreen);
         })
     ],
+    song: 'menu',
     
     // Sets up the screen, setting up mouse event handlers
     setup: function() {
