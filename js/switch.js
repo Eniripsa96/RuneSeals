@@ -68,6 +68,10 @@ game.switchMethods = {
         // Must be manual
         if (this.color) {
         
+            // Don't swap if the ring is rotating already
+            if (this.rings[0].rotationCount != 0) return;
+            if (this.rings[1].rotationCount != 0) return;
+        
             var r = 30 * this.scale;
             var x = this.x * this.scale + game.canvas.width / 2;
             var y = this.y * this.scale + game.canvas.height / 2;
