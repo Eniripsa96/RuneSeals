@@ -67,13 +67,15 @@ game.ringMethods = {
         var spaceAngle = extraSpace / (debrisPerSection + 1);
         
         // Fill in the debris
+        var mid = (debrisPerSection - 1) / 2;
         for (var i = 0; i < wheel.runesPerRing; i++) {
             var angle = i * wheel.angle + (rockAngle / 2 + spaceAngle + debrisAngle / 2) * Math.PI / 180;
             for (var j = 0; j < debrisPerSection; j++) {
                 var a = angle + j * (spaceAngle + debrisAngle) * Math.PI / 180;
                 list.push({
                     dir: game.math.Vector(Math.cos(a), Math.sin(a)),
-                    sprite: game.images.get('debris' + game.math.rand(game.value.DEBRIS_COUNT))
+                    sprite: game.images.get('debris' + game.math.rand(game.value.DEBRIS_COUNT)),
+                    alpha: 0.3 + 0.4 * Math.abs(j - mid) / mid
                 });
             }
         }
@@ -123,6 +125,7 @@ game.ringMethods = {
         // Draw the debris
         for (var debrisIndex in this.debris) {
             var debris = this.debris[debrisIndex];
+            ctx.globalAlpha = debris.alpha;
             ctx.transform(debris.dir.x, debris.dir.y, -debris.dir.y, debris.dir.x, ctx.canvas.width / 2, ctx.canvas.height / 2);
             ctx.drawImage(
                 debris.sprite, 
@@ -133,6 +136,7 @@ game.ringMethods = {
             );
             ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
+        ctx.globalAlpha = 1;
         
         // Draws the runes
         game.applyMethodList(this.runes, 'draw', ctx);

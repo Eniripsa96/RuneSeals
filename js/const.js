@@ -16,7 +16,7 @@ game.value = {
     
     // Number of rock sprites
     ROCK_COUNT: 6,
-    DEBRIS_COUNT: 3,
+    DEBRIS_COUNT: 6,
     
     // Available colors for switches
     SWITCH_COLORS: [

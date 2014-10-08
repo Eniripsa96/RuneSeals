@@ -20,6 +20,7 @@ game.gameScreen = {
     // setting up mouse event handlers
     setup: function() {
         this.generate();
+        this.background = game.images.get('gameBackground');
         game.mouseup = this.applyMouseUp.bind(this);
         game.mouseout = this.applyMouseOut.bind(this);
         game.mousedown = this.applyMouseDown.bind(this);

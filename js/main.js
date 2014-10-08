@@ -96,6 +96,7 @@ game.setup = function() {
     this.images.load('switch');
     this.images.load('wheel');
     this.images.load('center');
+    this.images.load('gameBackground');
     var i;
     for (i = 1; i <= 4; i++) {
         this.images.load('titleImage' + i);
@@ -123,10 +124,6 @@ game.update = function() {
     // Update the screen
     this.screen.update();
     
-    // Clear the canvas
-    this.canvasCtx.fillStyle = 'black';
-    this.canvasCtx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    
     // Update music
     if (this.activeSong != this.screen.song) {
         if (this.activeSong !== undefined) {
@@ -145,6 +142,15 @@ game.update = function() {
     if (this.activeSong === this.screen.song && this.activeSong !== undefined && this.music[this.activeSong].volume < 1) {
         this.music[this.activeSong].volume = Math.min(1, this.music[this.activeSong].volume + 0.01);
     }
+    
+    // Draw the background
+    var bg = this.images.get('gameBackground');
+    var sy = this.canvasCtx.canvas.height / bg.height;
+    var sx = this.canvasCtx.canvas.width / bg.width;
+    var s = Math.max(sx, sy);
+    var dx = (this.canvasCtx.canvas.width - bg.width * s) / 2;
+    var dy = (this.canvasCtx.canvas.height - bg.height * s) / 2;
+    this.canvasCtx.drawImage(bg, dx, dy, bg.width * s, bg.height * s);
     
     // Draw the screen
     this.screen.draw(this.canvasCtx);
