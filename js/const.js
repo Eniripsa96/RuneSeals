@@ -10,8 +10,13 @@ game.value = {
     ROTATION_COS: Math.cos(Math.PI / 90),
     ROTATION_SIN: Math.sin(Math.PI / 90),
     
+    // Debris math constants
+    GEM_ROCK_ANGLES: [45, 30, 20],
+    DEBRIS_ANGLES: [15, 10, 7],
+    
     // Number of rock sprites
-    ROCK_COUNT: 4,
+    ROCK_COUNT: 6,
+    DEBRIS_COUNT: 3,
     
     // Available colors for switches
     SWITCH_COLORS: [

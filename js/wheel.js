@@ -34,7 +34,7 @@ game.wheelMethods = {
         this.cos = Math.cos(this.angle);
         this.sin = Math.sin(this.angle)
         for (var i = 0; i < 3; i++) {
-            this.rings.push(game.Ring(this, 214 + 124 * i));
+            this.rings.push(game.Ring(this, 214 + 124 * i, i));
         }
     },
     

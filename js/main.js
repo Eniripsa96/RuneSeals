@@ -103,6 +103,9 @@ game.setup = function() {
     for (i = 0; i < this.value.ROCK_COUNT; i++) {
         this.images.load('rock' + i);
     }    
+    for (i = 0; i < this.value.DEBRIS_COUNT; i++) {
+        this.images.load('debris' + i);
+    }
     for (i = 0; i < 6; i++) {
         this.images.load('rune' + i);
     }

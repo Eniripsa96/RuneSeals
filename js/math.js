@@ -10,6 +10,11 @@ game.math = {
     sq: function(x) {
         return x * x;
     },
+    
+    // Randoms a positive integer in the range [0, max)
+    rand: function(max) {
+        return Math.floor(Math.random() * max);
+    },
 
     // A vector class with some helpful methods
     Vector: function(x, y) {
@@ -52,7 +57,8 @@ game.math = {
         
         // Multiples the vector by scalars, modifying it
         mul: function(x, y) {
-            return game.math.Vector(this.x * x, this.y * y);
+            this.x *= x; 
+            this.y *= y;
         },
         
         // Calculates the squared length of the vector
