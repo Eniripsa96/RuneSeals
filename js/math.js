@@ -31,6 +31,7 @@ game.math = {
             mul: this.vectorMethods.mul,
             lengthSq: this.vectorMethods.lengthSq,
             length: this.vectorMethods.length,
+            distanceSq: this.vectorMethods.distanceSq,
             rotate: this.vectorMethods.rotate,
             clone: this.vectorMethods.clone,
             normal: this.vectorMethods.normal
@@ -59,6 +60,7 @@ game.math = {
         mul: function(x, y) {
             this.x *= x; 
             this.y *= y;
+            return this;
         },
         
         // Calculates the squared length of the vector
@@ -70,6 +72,11 @@ game.math = {
         length: function() {
             this.length = this.length || Math.sqrt(this.lengthSq());
             return this.length;
+        },
+        
+        // Calculates the distance squared between the vector coordinates
+        distanceSq: function(vector) {
+            return (this.x - vector.x) * (this.x - vector.x) + (this.y * vector.y) * (this.y - vector.y);
         },
         
         // Rotates the vector with the cosine and sine of the rotation angle

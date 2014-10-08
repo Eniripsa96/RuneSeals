@@ -85,6 +85,23 @@ game.creditsScreen = {
         ctx.font = ctx.canvas.height * 0.04 + 'px "Bree Serif"';
         ctx.fillText(text, ctx.canvas.width * 0.1, 0.75 * ctx.canvas.height);
         
+        // Music Credits
+        text = 'Music';
+        size = ctx.measureText(text);
+        ctx.font = ctx.canvas.height * 0.065 + 'px "Bree Serif"';
+        ctx.fillText(text, 3 * ctx.canvas.width / 4 - size.width / 2, 0.475 * ctx.canvas.height);
+        
+        text = 'Menu Theme';
+        size = ctx.measureText(text);
+        ctx.font = ctx.canvas.height * 0.05 + 'px "Bree Serif"';
+        ctx.fillText(text, ctx.canvas.width * 0.55, 0.575 * ctx.canvas.height);
+        
+        // Song names
+        text = '"Serenity" by Steven Sucy';
+        size = ctx.measureText(text);
+        ctx.font = ctx.canvas.height * 0.04 + 'px "Bree Serif"';
+        ctx.fillText(text, ctx.canvas.width * 0.575, 0.625 * ctx.canvas.height);
+        
 		// Draw the buttons
         game.applyMethodList(this.content, 'draw', ctx);
     },
