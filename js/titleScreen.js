@@ -16,7 +16,7 @@ game.titleScreen = {
     content: [
         game.TitleButton('Play', 0.53, 0.35, 0.08, function() {
             console.log('Play button pressed');
-            game.gameScreen.level = 100;
+            game.gameScreen.level = 1;
             game.setScreen(game.gameScreen);
         }),
         game.TitleButton('Level Select', 0.68, 0.35, 0.08, function() {
