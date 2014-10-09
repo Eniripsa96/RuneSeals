@@ -16,6 +16,10 @@ game.gameScreen = {
     text: undefined,
     moves: [],
     best: undefined,
+    button: game.Button('Quit', 0.78, 0.9, 0.2, 0.05, function() {
+        console.log('Quit button pressed');
+        game.setScreen(game.titleScreen);
+    }),
     
     // Sets up the screen, initializing a level and
     // setting up mouse event handlers
@@ -135,6 +139,7 @@ game.gameScreen = {
     // Updates the screen by updating the wheel
     update: function() {
         this.wheel.update();
+        this.button.update();
         this.time = new Date().getTime();
     },
     
@@ -220,6 +225,9 @@ game.gameScreen = {
                 y += game.canvas.height * 0.04;
             }
         }
+        
+        // Draw the quit button
+        this.button.draw(ctx);
     },
     
     // Toggles manual switches of the given color
@@ -283,6 +291,7 @@ game.gameScreen = {
         for (var color in this.colorSwitches) {
             game.applyMethodList(this.colorSwitches[color], 'applyClick');
         }
+        this.button.applyClick();
         this.applyMouseOut();
     },
     

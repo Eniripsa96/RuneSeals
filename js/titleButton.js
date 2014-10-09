@@ -84,6 +84,7 @@ game.titleButtonMethods = {
     // Calls the callback function when clicked
     applyClick: function() {
         if (this.hovered && !this.disabled) {
+            this.width = this.oWidth;
             this.callback();
         }
     }

@@ -37,7 +37,7 @@ game.creditsScreen = {
         ctx.fillText(text, (ctx.canvas.width - size.width) / 2, 0.075 * ctx.canvas.height);
         
         // Draw boxes
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = '#222';
         ctx.strokeStyle = '#666';
         game.drawing.rect(ctx, 0.05 * ctx.canvas.width, 0.175 * ctx.canvas.height, 0.9 * ctx.canvas.width, 0.2 * ctx.canvas.height, 0.06 * ctx.canvas.height);
         ctx.fill();
@@ -62,7 +62,7 @@ game.creditsScreen = {
         text = 'Fonts';
         size = ctx.measureText(text);
         ctx.font = ctx.canvas.height * 0.065 + 'px "Bree Serif"';
-        ctx.fillText(text, ctx.canvas.width / 4 - size.width / 2, 0.475 * ctx.canvas.height);
+        ctx.fillText(text, ctx.canvas.width * 0.27 - size.width / 2, 0.475 * ctx.canvas.height);
         
         text = 'Cerviche One';
         size = ctx.measureText(text);
@@ -89,7 +89,7 @@ game.creditsScreen = {
         text = 'Music';
         size = ctx.measureText(text);
         ctx.font = ctx.canvas.height * 0.065 + 'px "Bree Serif"';
-        ctx.fillText(text, 3 * ctx.canvas.width / 4 - size.width / 2, 0.475 * ctx.canvas.height);
+        ctx.fillText(text, ctx.canvas.width * 0.72 - size.width / 2, 0.475 * ctx.canvas.height);
         
         text = 'Menu Theme';
         size = ctx.measureText(text);

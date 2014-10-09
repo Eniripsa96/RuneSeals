@@ -75,7 +75,7 @@ game.ringMethods = {
                 list.push({
                     dir: game.math.Vector(Math.cos(a), Math.sin(a)),
                     sprite: game.images.get('debris' + game.math.rand(game.value.DEBRIS_COUNT)),
-                    alpha: 0.3 + 0.4 * Math.abs(j - mid) / mid
+                    alpha: mid == 0 ? 0.5 : 0.4 + 0.3 * Math.abs(j - mid) / mid
                 });
             }
         }
