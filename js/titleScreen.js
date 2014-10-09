@@ -14,16 +14,16 @@ game.titleScreen = {
         game.math.Vector(1, 0), 1, 0
     ],
     content: [
-        game.Button('Play', 0.03, 0.53, 0.3, 0.08, function() {
+        game.TitleButton('Play', 0.53, 0.35, 0.08, function() {
             console.log('Play button pressed');
             game.gameScreen.level = 1;
             game.setScreen(game.gameScreen);
         }),
-        game.Button('Level Select', 0.03, 0.68, 0.3, 0.08, function() {
+        game.TitleButton('Level Select', 0.68, 0.35, 0.08, function() {
             console.log('Level select button presesd');
             game.setScreen(game.levelScreen);
         }),
-        game.Button('Credits', 0.03, 0.83, 0.3, 0.08, function() {
+        game.TitleButton('Credits', 0.83, 0.35, 0.08, function() {
             console.log('Credits button pressed');
             game.setScreen(game.creditsScreen);
         })

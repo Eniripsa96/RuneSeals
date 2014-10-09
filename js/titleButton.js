@@ -4,89 +4,81 @@
 var game = game || {};
 
 // A simple button to be used in menus
-game.Button = function(text, x, y, width, height, callback, disabled) {
+game.TitleButton = function(text, y, width, height, callback) {
     return {
     
         // Fields
         text: text,
-        x: x,
         y: y,
         width: width,
+        oWidth: width,
+        maxWidth: width * 1.25,
         height: height,
         hovered: false,
-        disabled: disabled,
-        color: '#222',
         
         // Methods
-        fill: this.buttonMethods.fill,
-        update: this.buttonMethods.update,
-        draw: this.buttonMethods.draw,
-        applyClick: this.buttonMethods.applyClick,
+        update: this.titleButtonMethods.update,
+        draw: this.titleButtonMethods.draw,
+        applyClick: this.titleButtonMethods.applyClick,
         callback: callback
     };
 }
 
 // The methods for buttons
-game.buttonMethods = {
-
-    // Sets the fill color of the button when enabled and not hovered
-    fill: function(color) {
-        this.color = color;
-        return this;
-    },
+game.titleButtonMethods = {
 
     // Updates whether or not the button is currently hovered
     update: function() {
     
-        var x = this.x * game.canvas.width;
         var y = this.y * game.canvas.height;
         var w = this.width * game.canvas.width;
         var h = this.height * game.canvas.width;
         
-        this.hovered = game.mouse.x >= x && game.mouse.y >= y && game.mouse.x <= x + w && game.mouse.y <= y + h;
+        this.hovered = game.mouse.y >= y && game.mouse.x <= w && game.mouse.y <= y + h;
     },
     
     // Draws the button to the canvas
     draw: function(ctx) {
     
         // Change the color if hovered
-        if (this.disabled) {
-            ctx.fillStyle = '#333';
-            ctx.strokeStyle = '#aaa';
-        }
-        else if (this.hovered) {
-            ctx.fillStyle = '#aaa';
-            ctx.strokeStyle = '#fff';
+        if (this.hovered) {
+            ctx.fillStyle = '#555';
+            ctx.strokeStyle = '#666';
+            if (this.width < this.maxWidth) {
+                this.width += 0.02;
+            }
         }
         else {
-            ctx.fillStyle = this.color;
-            ctx.strokeStyle = '#ddd';
+            ctx.fillStyle = '#222';
+            ctx.strokeStyle = '#666';
+            if (this.width > this.oWidth) {
+                this.width -= 0.02;
+            }
         }
         
-        // Draw the rounded rectangle
-        var x = this.x * ctx.canvas.width;
+        // Draw the button
         var y = this.y * ctx.canvas.height;
         var w = this.width * ctx.canvas.width;
         var h = this.height * ctx.canvas.width;
         var r = h / 5;
         ctx.lineWidth = r / 3;
-        game.drawing.rect(ctx, x, y, w, h, r);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w - h * 3 / 4, y);
+        ctx.lineTo(w, y + h * 3 / 4);
+        ctx.lineTo(w, y + h);
+        ctx.lineTo(0, y + h);
         ctx.fill();
         ctx.stroke();
         
         // Set the color for text
-        if (this.disabled) {
-            ctx.fillStyle = '#f66';
-        }
-        else {
-            ctx.fillStyle = '#fff';
-        }
+        ctx.fillStyle = '#fff';
         
         // Draw the text on top of the button
         ctx.font = 'bold ' + (0.6 * h) + 'px "Bree Serif"';
         ctx.textBaseline = 'middle';
         var size = ctx.measureText(this.text);
-        ctx.fillText(this.text, x + (w - size.width) / 2, y + h / 2);
+        ctx.fillText(this.text, (w - size.width) / 2, y + h / 2);
     },
     
     // Calls the callback function when clicked
