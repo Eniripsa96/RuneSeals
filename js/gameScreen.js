@@ -15,6 +15,7 @@ game.gameScreen = {
     time: undefined,
     text: undefined,
     moves: [],
+    best: undefined,
     
     // Sets up the screen, initializing a level and
     // setting up mouse event handlers
@@ -29,6 +30,9 @@ game.gameScreen = {
     
     // Generates a new wheel using the screen's current level
     generate: function() {
+    
+        // Get the best time for this level
+        this.best = game.userData.getNum('level' + this.level);
     
         // Clear any previous data
         this.wheel = undefined;
@@ -145,18 +149,18 @@ game.gameScreen = {
         game.applyMethodList(this.autoSwitches, 'draw', ctx);
         
         // Draw the level data box
+        ctx.strokeStyle = '#aaa';
+        ctx.fillStyle = '#aaa';
         var x = ctx.canvas.width * 0.02;
         var y = ctx.canvas.height * 0.03;
         var w = ctx.canvas.width * 0.2;
         var h = ctx.canvas.height * 0.2;
         var r = ctx.canvas.height * 0.02;
         ctx.lineWidth = r / 3;
-        ctx.strokeStyle = 'white';
         game.drawing.rect(ctx, x, y, w, h, r);
         ctx.stroke();
         
         // Current level
-        ctx.fillStyle = 'white';
         ctx.font = ctx.canvas.height * 0.06 + 'px "Bree Serif"';
         var text = 'Level ' + this.level;
         var size = ctx.measureText(text);
@@ -170,9 +174,32 @@ game.gameScreen = {
         size = ctx.measureText(text);
         ctx.fillText(text, ctx.canvas.width * 0.12 - size.width / 2, ctx.canvas.height * 0.16);
         
+        // Draw the best time data box
+        var x = ctx.canvas.width * 0.78;
+        game.drawing.rect(ctx, x, y, w, h, r);
+        ctx.stroke();
+        
+        // Best label
+        text = 'Best Time';
+        size = ctx.measureText(text);
+        ctx.fillText(text, ctx.canvas.width * 0.88 - size.width / 2, ctx.canvas.height * 0.08);
+        
+        // Best time
+        if (this.best > 0) {
+            seconds = this.best % 60;
+            minutes = Math.floor(this.best / 60);
+            text = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        }
+        else {
+            text = 'None';
+        }
+        size = ctx.measureText(text);
+        ctx.fillText(text, ctx.canvas.width * 0.88 - size.width / 2, ctx.canvas.height * 0.16);
+        
         // Level text
         if (this.text) {
         
+            x = ctx.canvas.width * 0.02;
             y = ctx.canvas.height * 0.78;
             game.drawing.rect(ctx, x, y, w, h, r);
             ctx.stroke();
@@ -233,10 +260,16 @@ game.gameScreen = {
     checkVictory: function() {
         if (this.wheel.isSolved()) {
         
-            // Update best progress
+            // Update progress
             var best = game.userData.getNum('level');
             if (this.level > best) {
                 game.userData.set('level', this.level);
+            }
+            
+            // Update time
+            var seconds = Math.max(1, Math.floor((this.time - this.startTime) / 1000));
+            if (seconds < this.best || this.best == 0) {
+                game.userData.set('level' + this.level, seconds);
             }
             
             // Move to the next level

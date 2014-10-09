@@ -38,8 +38,22 @@ game.music = {
     menu: new Audio("sound/runeOpening.mp3")
 };
 
+// Effects for the game
+game.effects = {
+    rotate: new Audio("sound/rotate.mp3"),
+    snap: new Audio("sound/snap.mp3")
+};
+
+// Plays a sound effect
+game.playEffect = function(name) {
+    this.effects[name].cloneNode().play();
+};
+
 // Initializes the game's data
 game.setup = function() {
+
+    game.userData.set('test', { x: 12, y: 25, z: 'hello' });
+    console.log(game.userData.get('test'));
 
     // Get needed data
     this.canvas = document.querySelector('#canvas');

@@ -166,13 +166,25 @@ game.ringMethods = {
             this.rotationAxis.rotate(c, s);
         }
         
+        // Play a sound if first rotation
+        if (this.rotationCount == 0) {
+            game.playEffect('rotate');
+        }
+        
         // Keep track of the number of rotations and the direction
         this.rotationCount += m;
+        
+        // Play a sound if returning to its original position
+        if (this.rotationCount == 0) {
+            game.playEffect('snap');
+        }
         
         // If a move was made, apply switches and end the dragging
         if (Math.abs(this.rotationCount) == this.rotationTarget) {
             this.rotationAxis = undefined;
             this.rotationCount = 0;
+            
+            game.playEffect('snap');
             
             this.applyRotation(clockwise);
             game.screen.moves.push({ rotation: true, ring: this, clockwise: clockwise });
