@@ -32,7 +32,7 @@ game.images = {
         // Starts loading the image and keeps track of how many are loading
         this.counter++;
         var img = new Image();
-        img.onload = this.onImgLoaded;
+        img.onload = this.onImgLoaded.bind(this);
         img.src = 'img/' + name + '.png';
         this.table[name] = img;
     },

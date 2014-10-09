@@ -135,6 +135,11 @@ window.addEventListener('load', game.setup.bind(game));
 game.update = function() {
     requestAnimationFrame(this.update.bind(this));
     
+    // Don't start until images are loaded
+    if (!this.images.isReady()) {
+        return;
+    }
+    
     // Update the screen
     this.screen.update();
     
