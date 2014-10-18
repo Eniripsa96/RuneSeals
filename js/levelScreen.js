@@ -10,17 +10,19 @@ game.levelScreen = {
     content: [
         game.Button('Back', 0.05, 0.86, 0.35, 0.05, function() {
             console.log('Back button pressed');
-            game.setScreen(game.titleScreen);
+            game.transitionScreen.transition(game.levelScreen, game.titleScreen);
         })
     ],
     song: 'menu',
     
     // Sets up the screen, setting up mouse event handlers
     setup: function() {
-    
         game.mouseup = this.clickButtons.bind(this);
-        
-        // Add the level buttons
+    },
+	
+	// Generates level buttons
+	generate: function() {
+		this.content.splice(1, this.content.length - 1);
         var best = game.userData.getNum('level');
         for (var i = 0; i < 100; i++) {
             this.content.push(game.Button(
@@ -32,12 +34,12 @@ game.levelScreen = {
                 function() {
                     console.log('Level ' + this.text + ' button pressed');
                     game.gameScreen.level = Number(this.text);
-                    game.setScreen(game.gameScreen);
+                    game.transitionScreen.transition(game.levelScreen, game.gameScreen);
                 },
                 best < i
             ).fill(game.value.LEVEL_COLORS[Math.floor(i / 5)]));
         }
-    },
+	},
     
     // Updates the screen by updating the screen's content
     update: function() {

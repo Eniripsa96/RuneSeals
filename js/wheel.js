@@ -15,6 +15,7 @@ game.Wheel = function(level, runesPerRing) {
         cos: undefined,
         sin: undefined,    
         rings: [],
+        enabled: [level < 2 || level > 5, true, level < 2 || level > 5],
         
         // Methods
         generate: this.wheelMethods.generate,
@@ -73,7 +74,14 @@ game.wheelMethods = {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         
         // Draw rings/runes
-        game.applyMethodList(this.rings, 'draw', ctx);
+        for (var i = 0; i < this.rings.length; i++) {
+            ctx.save();
+            if (!this.enabled[i]) {
+                ctx.globalAlpha *= 0.4;
+            }
+            this.rings[i].draw(ctx);
+            ctx.restore();
+        }
     },
     
     // Checks whether or not the wheel is solved

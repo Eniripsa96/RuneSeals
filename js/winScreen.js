@@ -10,6 +10,7 @@ game.winScreen = {
         game.Button('Next Level', 0.3, 0.42, 0.4, 0.1, function() {
             console.log('Next button pressed');
 			game.gameScreen.level++;
+            game.gameScreen.generate();
             game.setScreen(game.gameScreen);
         }).fill('black')
     ],

@@ -123,9 +123,10 @@ game.ringMethods = {
     draw: function(ctx) {
         
         // Draw the debris
+		var prevAlpha = ctx.globalAlpha;
         for (var debrisIndex in this.debris) {
             var debris = this.debris[debrisIndex];
-            ctx.globalAlpha = debris.alpha;
+            ctx.globalAlpha = prevAlpha * debris.alpha;
             ctx.transform(debris.dir.x, debris.dir.y, -debris.dir.y, debris.dir.x, ctx.canvas.width / 2, ctx.canvas.height / 2);
             ctx.drawImage(
                 debris.sprite, 
@@ -136,7 +137,7 @@ game.ringMethods = {
             );
             ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = prevAlpha;
         
         // Draws the runes
         game.applyMethodList(this.runes, 'draw', ctx);
@@ -187,8 +188,8 @@ game.ringMethods = {
             game.playEffect('snap');
             
             this.applyRotation(clockwise);
-            game.screen.moves.push({ rotation: true, ring: this, clockwise: clockwise });
-            game.screen.checkVictory();
+            game.gameScreen.moves.push({ rotation: true, ring: this, clockwise: clockwise });
+            game.gameScreen.checkVictory();
         }
     },
     
@@ -206,9 +207,9 @@ game.ringMethods = {
     
     // Unshifts the ring's runes for an undo
     unshift: function(clockwise) {
-        game.screen.switchAuto(this);
+        game.gameScreen.switchAuto(this);
         this.shift(!clockwise);
-        game.screen.switchAuto(this);
+        game.gameScreen.switchAuto(this);
     },
     
     // Applies switches and rearranges runes when rotating
@@ -225,7 +226,7 @@ game.ringMethods = {
 		}
 		
         // Apply automatic switches
-        game.screen.switchAuto(this);
+        game.gameScreen.switchAuto(this);
 	},
     
     // Mark where the mouse started if the player clicks on the ring

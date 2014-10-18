@@ -18,14 +18,12 @@ game.gameScreen = {
     best: undefined,
     button: game.Button('Quit', 0.78, 0.9, 0.2, 0.05, function() {
         console.log('Quit button pressed');
-        game.setScreen(game.titleScreen);
+        game.transitionScreen.transition(game.gameScreen, game.titleScreen);
     }),
     
     // Sets up the screen, initializing a level and
     // setting up mouse event handlers
     setup: function() {
-        this.generate();
-        this.background = game.images.get('gameBackground');
         game.mouseup = this.applyMouseUp.bind(this);
         game.mouseout = this.applyMouseOut.bind(this);
         game.mousedown = this.applyMouseDown.bind(this);
@@ -34,6 +32,8 @@ game.gameScreen = {
     
     // Generates a new wheel using the screen's current level
     generate: function() {
+	
+		this.startTime = undefined;
     
         // Get the best time for this level
         this.best = game.userData.getNum('level' + this.level);
@@ -75,7 +75,7 @@ game.gameScreen = {
                 mod = rand % 2;
                 div = Math.floor(rand / 2);
             }
-            while ((last[3] >= 6 && rand >= 6) || (rand < 6 && last[div] !== undefined && mod < 1 == last[div] < 1));
+            while ((last[3] >= 6 && rand >= 6) || (rand < 6 && last[div] !== undefined && mod < 1 == last[div] < 1) || (rand < 6 && !this.wheel.enabled[div]));
             last[3] = rand;
             
             if (rand < 6) {
@@ -94,9 +94,6 @@ game.gameScreen = {
             this.generate();
             return;
         }
-        
-        // Start the timer
-        this.startTime = new Date().getTime();
         
         // Get the level text
         this.text = game.value.LEVEL_TEXT[this.level];
@@ -141,6 +138,11 @@ game.gameScreen = {
         this.wheel.update();
         this.button.update();
         this.time = new Date().getTime();
+		
+		// Start the timer if not already
+		if (!this.startTime) {
+			this.startTime = new Date().getTime();
+		}
     },
     
     // Draws the game screen, rendering the wheel and switches
@@ -172,9 +174,12 @@ game.gameScreen = {
         ctx.fillText(text, ctx.canvas.width * 0.12 - size.width / 2, ctx.canvas.height * 0.08);
         
         // Current time
-        var seconds = Math.floor((this.time - this.startTime) / 1000);
-        var minutes = Math.floor(seconds / 60);
-        seconds = seconds % 60;
+		var seconds = 0, minutes = 0;
+		if (this.startTime) {
+			var seconds = Math.floor((this.time - this.startTime) / 1000);
+			var minutes = Math.floor(seconds / 60);
+			seconds = seconds % 60;
+		}
         text = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
         size = ctx.measureText(text);
         ctx.fillText(text, ctx.canvas.width * 0.12 - size.width / 2, ctx.canvas.height * 0.16);
@@ -298,11 +303,19 @@ game.gameScreen = {
     // Handles mouse down events for the screen, starting
     // dragging rings around
     applyMouseDown: function() {
-        game.applyMethodList(this.wheel.rings, 'applyMouseDown');
+        for (var i = 0; i < this.wheel.rings.length; i++) {
+            if (this.wheel.enabled[i]) {
+                this.wheel.rings[i].applyMouseDown();
+            }
+        }
     },
     
     // Handles mouse out events for the screen, cancelling dragging rings
     applyMouseOut: function() {
-        game.applyMethodList(this.wheel.rings, 'applyMouseUp');
+        for (var i = 0; i < this.wheel.rings.length; i++) {
+            if (this.wheel.enabled[i]) {
+                this.wheel.rings[i].applyMouseUp();
+            }
+        }
     }
 };

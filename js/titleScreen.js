@@ -17,15 +17,15 @@ game.titleScreen = {
         game.TitleButton('Play', 0.53, 0.35, 0.08, function() {
             console.log('Play button pressed');
             game.gameScreen.level = 1;
-            game.setScreen(game.gameScreen);
+			game.transitionScreen.transition(game.titleScreen, game.gameScreen);
         }),
         game.TitleButton('Level Select', 0.68, 0.35, 0.08, function() {
             console.log('Level select button presesd');
-            game.setScreen(game.levelScreen);
+            game.transitionScreen.transition(game.titleScreen, game.levelScreen);
         }),
         game.TitleButton('Credits', 0.83, 0.35, 0.08, function() {
             console.log('Credits button pressed');
-            game.setScreen(game.creditsScreen);
+            game.transitionScreen.transition(game.titleScreen, game.creditsScreen);
         })
     ],
     song: 'menu',
@@ -34,6 +34,14 @@ game.titleScreen = {
     setup: function() {
         game.mouseup = this.clickButtons.bind(this);
     },
+	
+	// Resets button widths and color
+	generate: function() {
+		for (var i = 0; i < this.content.length; i++) {
+			this.content[i].width = this.content[i].oWidth;
+			this.content[i].hovered = false;
+		}
+	},
     
     // Updates the screen by updating the screen's content
     update: function() {

@@ -52,8 +52,10 @@ game.value = {
     // Text for various levels
     LEVEL_TEXT: {
         1: ['Drag rings to', 'rotate them.', 'Align colors to', 'clear the level.'],
-        2: ['You can right', 'click to undo', 'any number', 'of moves'],
-        6: ['Click switches', 'to swap runes', 'between rings.'],
+        2: ['Faded rings', 'are disabled', "and you can't", 'rotate them.'],
+        3: ['Click switches', 'to swap runes', 'between rings.'],
+        4: ['You can right', 'click to undo', 'any number', 'of moves.'],
+        5: ['This is the last', 'level before', 'it gets harder.', 'Good luck.'],
         16: ['Switches with', 'the same color', 'activate at', 'the same time.'],
         56: ['Black switches', 'automatically', 'switch passing', 'runes.']
     },

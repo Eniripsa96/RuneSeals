@@ -14,6 +14,7 @@ game.levels = {
     
     // Retrieves the manual switch pattern for a level
     getSwitchPattern: function(level) {
+        if (level >= 3 && level <= 5) return [1];
         level = Math.floor((level + 4) / 5);
         if (level == 1) return game.value.LEVEL_SWITCHES[0];
         else return game.value.LEVEL_SWITCHES[((level - 2) % 10) + 1]

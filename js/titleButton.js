@@ -35,27 +35,33 @@ game.titleButtonMethods = {
         var h = this.height * game.canvas.width;
         
         this.hovered = game.mouse.y >= y && game.mouse.x <= w && game.mouse.y <= y + h;
-    },
-    
-    // Draws the button to the canvas
-    draw: function(ctx) {
-    
-        // Change the color if hovered
+		
+		// Change the color if hovered
         if (this.hovered) {
-            ctx.fillStyle = '#555';
-            ctx.strokeStyle = '#666';
             if (this.width < this.maxWidth) {
                 this.width += 0.02;
             }
         }
         else {
-            ctx.fillStyle = '#222';
-            ctx.strokeStyle = '#666';
             if (this.width > this.oWidth) {
                 this.width -= 0.02;
             }
         }
-        
+    },
+    
+    // Draws the button to the canvas
+    draw: function(ctx) {
+	
+		// Change the color if hovered
+        if (this.hovered) {
+            ctx.fillStyle = '#555';
+            ctx.strokeStyle = '#666';
+        }
+        else {
+            ctx.fillStyle = '#222';
+            ctx.strokeStyle = '#666';
+        }
+    
         // Draw the button
         var y = this.y * ctx.canvas.height;
         var w = this.width * ctx.canvas.width;
@@ -84,7 +90,6 @@ game.titleButtonMethods = {
     // Calls the callback function when clicked
     applyClick: function() {
         if (this.hovered && !this.disabled) {
-            this.width = this.oWidth;
             this.callback();
         }
     }

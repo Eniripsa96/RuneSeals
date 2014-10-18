@@ -10,7 +10,7 @@ game.creditsScreen = {
     content: [
         game.Button('Back', 0.05, 0.86, 0.425, 0.05, function() {
             console.log('Back button pressed');
-            game.setScreen(game.titleScreen);
+            game.transitionScreen.transition(game.creditsScreen, game.titleScreen);
         })
     ],
     song: 'menu',
